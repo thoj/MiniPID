@@ -23,6 +23,7 @@ public:
 	void setFeedForwardValue(double);
 	void setFeedForwardValue(bool);
 	void setActive(bool);
+	void setPOnMesurement(bool);
 	double getOutput();
 	double getOutput(double);
 	double getOutput(double, double);
@@ -54,6 +55,7 @@ private:
 	bool firstRun;
 	bool reversed;
 	bool useFeedForwardValue;
+	bool pOnMesurement;
 
 	double outputRampRate;
 	double lastOutput;
