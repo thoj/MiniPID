@@ -198,8 +198,9 @@ double MiniPID::getOutput(double actual, double setpoint){
 	//Do the simple parts of the calculations
 	double error=setpoint-actual;
 
-	//Calculate F output. Notice, this->depends only on the setpoint, and not the error. 
-	Foutput=F*setpoint;
+	//Calculate F output. Notice that this depends on the feedforward value or the setpoint 
+	if (useFeedForwardValue) Foutput = F * feedForwardValue; 
+	else Foutput = F * setpoint;
 
 	//Calculate P term
 	Poutput=P*error;	 
@@ -216,8 +217,7 @@ double MiniPID::getOutput(double actual, double setpoint){
 
 	//Calculate D Term
 	//Note, this->is negative. this->actually "slows" the system if it's doing
-	//the correct thing, and small values helps prevent output spikes and overshoot 
-
+	//the correct thing, and small values helps prevent output spikes and overshoot
 	Doutput= -D*(actual-lastActual);
 	lastActual=actual;
 
@@ -322,6 +322,21 @@ void MiniPID::setOutputFilter(double strength){
 	if(strength==0 || bounded(strength,0,1)){
 		outputFilter=strength;
 	}
+}
+
+/**
+ * Set feedforward value instead of just using setpoint. 
+ * Tip: Set to ambient temperature - Setpoint to keep 
+ * output at a minimum to keep up for temperature loss.
+ * setFeedForwardValue(false) to disable and use setpoint.
+ */
+void MiniPID::setFeedForwardValue(double value) {
+    feedForwardValue = value;
+    useFeedForwardValue = true;
+}
+
+void MiniPID::setFeedForwardValue(bool enable) {
+    useFeedForwardValue = enable;
 }
 
 //**************************************
