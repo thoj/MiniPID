@@ -20,6 +20,8 @@ public:
 	void setOutputRampRate(double);
 	void setSetpointRange(double);
 	void setOutputFilter(double);
+	void setFeedForwardValue(double);
+	void setFeedForwardValue(bool);
 	double getOutput();
 	double getOutput(double);
 	double getOutput(double, double);
@@ -44,9 +46,12 @@ private:
 	double setpoint;
 
 	double lastActual;
+	
+	double feedForwardValue;
 
 	bool firstRun;
 	bool reversed;
+	bool useFeedForwardValue;
 
 	double outputRampRate;
 	double lastOutput;
