@@ -325,6 +325,15 @@ void MiniPID::setOutputFilter(double strength){
 }
 
 /**
+ * Set is the controller is active.
+ * Bumpless transfer is the goal here. 
+ */
+void MiniPID::setActive(bool active) {
+    if (active && !this->active) firstRun = true;
+    this->active = active;
+}
+
+/**
  * Set feedforward value instead of just using setpoint. 
  * Tip: Set to ambient temperature - Setpoint to keep 
  * output at a minimum to keep up for temperature loss.
