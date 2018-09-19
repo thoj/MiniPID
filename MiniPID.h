@@ -22,6 +22,7 @@ public:
 	void setOutputFilter(double);
 	void setFeedForwardValue(double);
 	void setFeedForwardValue(bool);
+	void setActive(bool);
 	double getOutput();
 	double getOutput(double);
 	double getOutput(double, double);
@@ -49,6 +50,7 @@ private:
 	
 	double feedForwardValue;
 
+    bool active;
 	bool firstRun;
 	bool reversed;
 	bool useFeedForwardValue;
