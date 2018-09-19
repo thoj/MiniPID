@@ -182,6 +182,17 @@ void MiniPID::setSetpoint(double setpoint){
 * @return calculated output value for driving the actual to the target 
 */
 double MiniPID::getOutput(double actual, double setpoint){
+    //Manual / Active5
+    if (!active) return 0;
+    
+    //Do hysteresis control
+    if (hysteresisControl) {
+        if (!reversed && actual - setpoint < hysteresisOn) return maxOutput;
+        if (!reversed && actual - setpoint > hysteresisOff) return minOutput;
+        if (reversed && actual - setpoint > hysteresisOn) return maxOutput;
+        if (reversed && actual - setpoint < hysteresisOff) return minOutput;
+    }
+    
 	double output;
 	double Poutput;
 	double Ioutput;
@@ -202,26 +213,27 @@ double MiniPID::getOutput(double actual, double setpoint){
 	if (useFeedForwardValue) Foutput = F * feedForwardValue; 
 	else Foutput = F * setpoint;
 
-	//Calculate P term
-	Poutput=P*error;	 
-
 	//If this->is our first time running this-> we don't actually _have_ a previous input or output. 
 	//For sensor, sanely assume it was exactly where it is now.
 	//For last output, we can assume it's the current time-independent outputs. 
 	if(firstRun){
 		lastActual=actual;
-		lastOutput=Poutput+Foutput;
+		lastOutput=P*error+Foutput;
 		firstRun=false;
 	}
-
+	
+	//Calculate P term
+	if (pOnMesurement) { 
+	    pSum =- P * (actual-lastActual);
+	    Poutput = pSum;
+	}
+	else Poutput=P*error;
 
 	//Calculate D Term
 	//Note, this->is negative. this->actually "slows" the system if it's doing
 	//the correct thing, and small values helps prevent output spikes and overshoot
 	Doutput= -D*(actual-lastActual);
 	lastActual=actual;
-
-
 
 	//The Iterm is more complex. There's several things to factor in to make it easier to deal with.
 	// 1. maxIoutput restricts the amount of output contributed by the Iterm.
@@ -233,7 +245,7 @@ double MiniPID::getOutput(double actual, double setpoint){
 	}	
 
 	//And, finally, we can just add the terms up
-	output=Foutput + Poutput + Ioutput + Doutput;
+    output=Foutput + Poutput + Ioutput + Doutput;
 
 	//Figure out what we're doing with the error.
 	if(minOutput!=maxOutput && !bounded(output, minOutput,maxOutput) ){
@@ -327,7 +339,7 @@ void MiniPID::setOutputFilter(double strength){
 /**
  * Normally P term is multipled by error. This may cause overshoot on 
  * some integrating processes like heating. This function sets P to act 
- * on the mesurement instead. 
+ * on the mesurement instead. Great for processes that seems to overshoot no matter what you do.
  * http://brettbeauregard.com/blog/2017/06/introducing-proportional-on-measurement/
  */
 void MiniPID::setPOnMesurement(bool pOnMesurement) {
@@ -339,7 +351,7 @@ void MiniPID::setPOnMesurement(bool pOnMesurement) {
  * Bumpless transfer is the goal here. 
  */
 void MiniPID::setActive(bool active) {
-    if (active && !this->active) firstRun = true;
+    if (active && !this->active) reset();
     this->active = active;
 }
 
@@ -356,6 +368,19 @@ void MiniPID::setFeedForwardValue(double value) {
 
 void MiniPID::setFeedForwardValue(bool enable) {
     useFeedForwardValue = enable;
+}
+
+/**
+ * Set hysteresis control. Instant response when far away from setpoint.
+ */
+void MiniPID::setHysteresisControl(double on, double off) {
+    hysteresisControl = true;
+    hysteresisOn = on;
+    hysteresisOff = off;
+}
+
+void MiniPID::setHysteresisControl(bool enable) {
+    hysteresisControl = enable;
 }
 
 //**************************************
