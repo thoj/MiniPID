@@ -325,6 +325,16 @@ void MiniPID::setOutputFilter(double strength){
 }
 
 /**
+ * Normally P term is multipled by error. This may cause overshoot on 
+ * some integrating processes like heating. This function sets P to act 
+ * on the mesurement instead. 
+ * http://brettbeauregard.com/blog/2017/06/introducing-proportional-on-measurement/
+ */
+void MiniPID::setPOnMesurement(bool pOnMesurement) {
+    this->pOnMesurement = pOnMesurement;
+}
+
+/**
  * Set is the controller is active.
  * Bumpless transfer is the goal here. 
  */
