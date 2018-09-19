@@ -24,6 +24,8 @@ public:
 	void setFeedForwardValue(bool);
 	void setActive(bool);
 	void setPOnMesurement(bool);
+	void setHysteresisControl(double, double);
+	void setHysteresisControl(bool);
 	double getOutput();
 	double getOutput(double);
 	double getOutput(double, double);
@@ -41,6 +43,7 @@ private:
 	double maxIOutput;
 	double maxError;
 	double errorSum;
+	double pSum;
 
 	double maxOutput; 
 	double minOutput;
@@ -50,12 +53,15 @@ private:
 	double lastActual;
 	
 	double feedForwardValue;
+	double hysteresisOn;
+	double hysteresisOff;
 
     bool active;
 	bool firstRun;
 	bool reversed;
 	bool useFeedForwardValue;
 	bool pOnMesurement;
+	bool hysteresisControl;
 
 	double outputRampRate;
 	double lastOutput;
