@@ -169,7 +169,7 @@ void MiniPID::setOutputLimits(double minimum, double maximum) {
  * @param reversed Set true to reverse PID output
  */
 void MiniPID::setDirection(bool reversed) {
-  this - > reversed = reversed;
+  this->reversed = reversed;
 }
 
 //**********************************
@@ -180,7 +180,7 @@ void MiniPID::setDirection(bool reversed) {
  * @param setpoint
  */
 void MiniPID::setSetpoint(double setpoint) {
-  this - > setpoint = setpoint;
+  this-> setpoint = setpoint;
 }
 
 /** Calculate the PID value needed to hit the target setpoint. 
@@ -210,7 +210,7 @@ double MiniPID::getOutput(double actual, double setpoint) {
 
   double output;
 
-  this - > setpoint = setpoint;
+  this-> setpoint = setpoint;
 
   //Ramp the setpoint used for calculations if user has opted to do so
   if (setpointRange != 0) {
@@ -342,7 +342,7 @@ void MiniPID::setOutputFilter(double strength) {
  * http://brettbeauregard.com/blog/2017/06/introducing-proportional-on-measurement/
  */
 void MiniPID::setPOnMesurement(bool pOnMesurement) {
-  this - > pOnMesurement = pOnMesurement;
+  this-> pOnMesurement = pOnMesurement;
 }
 
 /**
@@ -350,8 +350,8 @@ void MiniPID::setPOnMesurement(bool pOnMesurement) {
  * Bumpless transfer is the goal here. 
  */
 void MiniPID::setActive(bool active) {
-  if (active && !this - > active) reset();
-  this - > active = active;
+  if (active && !this->active) reset();
+  this-> active = active;
 }
 
 /**
