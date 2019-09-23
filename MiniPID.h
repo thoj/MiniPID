@@ -1,76 +1,76 @@
 #ifndef MINIPID_H
 #define MINIPID_H
 
-class MiniPID{
-public:
-	MiniPID(double, double, double);
-	MiniPID(double, double, double, double);
-	void setP(double);
-	void setI(double);
-	void setD(double);
-	void setF(double);
-	void setPID(double, double, double);
-	void setPID(double, double, double, double);
-	void setMaxIOutput(double);
-	void setOutputLimits(double);
-	void setOutputLimits(double,double);
-	void setDirection(bool);
-	void setSetpoint(double);
-	void reset();
-	void setOutputRampRate(double);
-	void setSetpointRange(double);
-	void setOutputFilter(double);
-	void setFeedForwardValue(double);
-	void setActive(bool);
-	void setPOnMesurement(bool);
-	void setHysteresisControl(double, double);
-	void setHysteresisControl(bool);
-	double getOutput();
-	double getOutput(double);
-	double getOutput(double, double);
-	bool isPositive(double);
-	
-	double Poutput; //public for help for tuning
-	double Ioutput;
-	double Doutput;
-	double Foutput;
+class MiniPID {
+  public:
+    MiniPID(double, double, double);
+  MiniPID(double, double, double, double);
+  void setP(double);
+  void setI(double);
+  void setD(double);
+  void setF(double);
+  void setPID(double, double, double);
+  void setPID(double, double, double, double);
+  void setMaxIOutput(double);
+  void setOutputLimits(double);
+  void setOutputLimits(double, double);
+  void setDirection(bool);
+  void setSetpoint(double);
+  void reset();
+  void setOutputRampRate(double);
+  void setSetpointRange(double);
+  void setOutputFilter(double);
+  void setFeedForwardValue(double);
+  void setActive(bool);
+  void setPOnMesurement(bool);
+  void setHysteresisControl(double, double);
+  void setHysteresisControl(bool);
+  double getOutput();
+  double getOutput(double);
+  double getOutput(double, double);
+  bool isPositive(double);
 
-private:
-	double clamp(double, double, double);
-	bool bounded(double, double, double);
-	void checkSigns();
-	void init();
-	double P;
-	double I;
-	double D;
-	double F;
+  double Poutput; //public for help for tuning
+  double Ioutput;
+  double Doutput;
+  double Foutput;
 
-	double maxIOutput;
-	double iSum;
-	double pSum;
+  private:
+    double clamp(double, double, double);
+  bool bounded(double, double, double);
+  void checkSigns();
+  void init();
+  double P;
+  double I;
+  double D;
+  double F;
 
-	double maxOutput; 
-	double minOutput;
+  double maxIOutput;
+  double iSum;
+  double pSum;
 
-	double setpoint;
+  double maxOutput;
+  double minOutput;
 
-	double lastActual;
-	
-	double feedForwardValue;
-	double hysteresisOn;
-	double hysteresisOff;
+  double setpoint;
 
-    bool active;
-	bool firstRun;
-	bool reversed;
-	bool pOnMesurement;
-	bool hysteresisControl;
+  double lastActual;
 
-	double outputRampRate;
-	double lastOutput;
+  double feedForwardValue;
+  double hysteresisOn;
+  double hysteresisOff;
 
-	double outputFilter;
+  bool active;
+  bool firstRun;
+  bool reversed;
+  bool pOnMesurement;
+  bool hysteresisControl;
 
-	double setpointRange;
+  double outputRampRate;
+  double lastOutput;
+
+  double outputFilter;
+
+  double setpointRange;
 };
 #endif
