@@ -21,7 +21,6 @@ public:
 	void setSetpointRange(double);
 	void setOutputFilter(double);
 	void setFeedForwardValue(double);
-	void setFeedForwardValue(bool);
 	void setActive(bool);
 	void setPOnMesurement(bool);
 	void setHysteresisControl(double, double);
@@ -29,6 +28,12 @@ public:
 	double getOutput();
 	double getOutput(double);
 	double getOutput(double, double);
+	bool isPositive(double);
+	
+	double Poutput; //public for help for tuning
+	double Ioutput;
+	double Doutput;
+	double Foutput;
 
 private:
 	double clamp(double, double, double);
@@ -41,8 +46,7 @@ private:
 	double F;
 
 	double maxIOutput;
-	double maxError;
-	double errorSum;
+	double iSum;
 	double pSum;
 
 	double maxOutput; 
@@ -59,7 +63,6 @@ private:
     bool active;
 	bool firstRun;
 	bool reversed;
-	bool useFeedForwardValue;
 	bool pOnMesurement;
 	bool hysteresisControl;
 
